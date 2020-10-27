@@ -11,7 +11,7 @@ import java.util.Date;
 // GOOD
 import java.util.*;
 ```
-- Indentation should be 4 spaces deep on each block, not 2.
-  - Do not mix tabs and spaces.
-- You SHOULD wrap the line if it reaches 80 characters wide, you MUST wrap the line if it exceeds 100.
-  - When line wrapping the continuation line should be indented 8 spaces deep.
+2. Indentation should be 4 spaces deep on each block, not 2.
+3. Do not mix tabs and spaces.
+4. You SHOULD wrap the line if it reaches 80 characters wide, you MUST wrap the line if it exceeds 100.
+5. When line wrapping the continuation line should be indented 8 spaces deep.
