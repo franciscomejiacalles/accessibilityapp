@@ -15,3 +15,4 @@ import java.util.*;
 3. Do not mix tabs and spaces.
 4. You SHOULD wrap the line if it reaches 80 characters wide, you MUST wrap the line if it exceeds 100.
 5. When line wrapping the continuation line should be indented 8 spaces deep.
+6. Do not push redundant or erroneous code that has been commented out, unless you think it is important that it remain there. If you do, please leave a comment explaining why.
