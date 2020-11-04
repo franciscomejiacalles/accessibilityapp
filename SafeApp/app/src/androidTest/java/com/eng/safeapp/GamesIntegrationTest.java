@@ -16,21 +16,20 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainMenuEspressoTest {
-
+public class GamesIntegrationTest {
     @Rule
-    public ActivityTestRule<MainMenu> activityRule =
-            new ActivityTestRule<>(MainMenu.class);
+    public ActivityTestRule<Games> activityRule =
+            new ActivityTestRule<>(Games.class);
 
 
     @Test
-    public void facialExpressionGameLaunch() {
+    public void gamesLaunch() {
         // Check that clicking the start game button takes the user to the game screen.
-        onView(withId(R.id.safeAppTextView)).check(matches(isDisplayed()));
-        onView(withId(R.id.gamesBtn)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.gamesBtn))
-                .perform(click());
         onView(withId(R.id.gamesTextView)).check(matches(isDisplayed()));
+        onView(withId(R.id.facialExpressionButton)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.facialExpressionButton))
+                .perform(click());
+        onView(withId(R.id.currentEmotionTextView)).check(matches(isDisplayed()));
     }
 }

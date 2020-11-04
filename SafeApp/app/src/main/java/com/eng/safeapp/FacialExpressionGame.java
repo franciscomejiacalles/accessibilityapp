@@ -21,6 +21,7 @@ import java.util.TimerTask;
 public class FacialExpressionGame extends AppCompatActivity {
 
     Timer timer;
+
     private String currentEmotion;
     private int correct;
     private int incorrect;
@@ -196,5 +197,13 @@ public class FacialExpressionGame extends AppCompatActivity {
 
     public void setEmotions(ArrayList<String> emotions) {
         this.emotions = emotions;
+    }
+
+    public String getCurrentEmotion() {
+        return currentEmotion;
+    }
+
+    public void setCurrentEmotion(String currentEmotion) {
+        this.currentEmotion = currentEmotion;
     }
 }
