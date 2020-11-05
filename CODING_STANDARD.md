@@ -1,14 +1,14 @@
 The coding standard follows the [Google Coding Standard](https://google.github.io/styleguide/javaguide.html) with the following ammendments:
-1. No cargo cult. If you find yourself importing more than 3 packages from the same library, it is better to use a wild card import than to list every single import.
+1. No cargo cult. If you find yourself importing a lot of packages from the same library it makes better sense to use a wild card than list every single one. Use your own discretion.
 ```java
-// BAD
+// UNDESIRABLE
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.Date;
 
-// GOOD
+// PREFERRED
 import java.util.*;
 ```
 2. Indentation should be 4 spaces deep on each block, not 2.
