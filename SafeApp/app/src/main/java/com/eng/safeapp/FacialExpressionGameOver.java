@@ -8,16 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/* javadoc?
+ * what does this class do, what is it used for?
+ */
 public class FacialExpressionGameOver extends AppCompatActivity {
-
-    public static int correctPoints = 100;
-    public static int incorrectPenalty = 30;
+    // clearer and more consistent var names would be preferred
+    public static int correctPoints = 100; // why not "reward?"
+    public static int incorrectPenalty = 30; // why not "penalty?"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facial_expression_game_over);
 
+        // what's this bit doing?
         Button mainMenuBtn = findViewById(R.id.gameOverMainMenuBtn);
         mainMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,14 +31,15 @@ public class FacialExpressionGameOver extends AppCompatActivity {
             }
         });
 
+        // what's this bit doing?
         int correct = getIntent().getIntExtra("correct", 0);
         int incorrect = getIntent().getIntExtra("incorrect", 0);
         int score = calculateScore(correct, incorrect);
-
         TextView scoreTextView = findViewById(R.id.scoreTextView);
         scoreTextView.setText(score + "");
     }
 
+    // what about "caculateTotal"?
     private int calculateScore(int correct, int incorrect) {
         int score = (correct * 100) - (incorrect * 30);
         if (score < 0) {

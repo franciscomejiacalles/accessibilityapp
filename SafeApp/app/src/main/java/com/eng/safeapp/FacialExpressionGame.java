@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+// should a wildcard be used?
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,15 +19,19 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/* javadoc?
+ * what does this class do, what is it used for?
+ */
 public class FacialExpressionGame extends AppCompatActivity {
 
     Timer timer;
+    private String currentEmotion; /* could this be represented as
+                                      a num with a corresponding enum? */
+    private int correct;    // why are these integers?
+    private int incorrect;  // ~
 
-    private String currentEmotion;
-    private int correct;
-    private int incorrect;
-
-    private ArrayList<String> emotions = new ArrayList<>(Arrays.asList("Happy", "Sad", "Surprised", "Anger", "Fear", "Disgust", "Confused", "Neutral"));
+    private ArrayList<String> emotions = new ArrayList<>(Arrays.asList("Happy", 
+            "Sad", "Surprised", "Anger", "Fear", "Disgust", "Confused", "Neutral"));
     private HashMap<String, ArrayList<Integer>> emotionToFacialExpression= new HashMap<>();
     public ArrayList<ImageButton> buttons = new ArrayList<>();
 
@@ -59,7 +64,6 @@ public class FacialExpressionGame extends AppCompatActivity {
     public void loadNextMatch() {
         // Select facial expressions (1 expression per emotion)
         ArrayList<String> emotionsToChooseFrom = selectEmotionsToChooseFrom(emotions, buttons.size());
-
         currentEmotion = pickRandomString(emotionsToChooseFrom);
         TextView currentEmotionTextView = findViewById(R.id.currentEmotionTextView);
         currentEmotionTextView.setText(currentEmotion);
@@ -118,6 +122,7 @@ public class FacialExpressionGame extends AppCompatActivity {
     }
 
     public void initializeFacialExpressionMapping() {
+        // there must be a better way!
         // Initialize emotionToFacialExpression hashMap.
         ArrayList<Integer> happyFacialExpressions = new ArrayList<>();
         happyFacialExpressions.add(R.drawable.happy_001);
@@ -168,6 +173,7 @@ public class FacialExpressionGame extends AppCompatActivity {
     }
 
     public void initializeButtons() {
+        // could this be done differently?
         buttons.add((ImageButton) findViewById(R.id.button0));
         buttons.add((ImageButton) findViewById(R.id.button1));
         buttons.add((ImageButton) findViewById(R.id.button2));
@@ -176,12 +182,15 @@ public class FacialExpressionGame extends AppCompatActivity {
         buttons.add((ImageButton) findViewById(R.id.button5));
     }
 
+    // a clearer name would be preferred, for eg: chooseRandomEmotion
+    // that said, this can be removed if/once we implement an emotions enum
     public String pickRandomString(ArrayList<String> s) {
         Random r = new Random();
         int randomIndex = r.nextInt(s.size());
         return s.get(randomIndex);
     }
 
+    // could be "selectEmotion" instead
     public ArrayList<String> selectEmotionsToChooseFrom(ArrayList<String> emotions, int numberOfEmotions) {
         Collections.shuffle(emotions);
         ArrayList<String> emotionsToChooseFrom = new ArrayList<>();
