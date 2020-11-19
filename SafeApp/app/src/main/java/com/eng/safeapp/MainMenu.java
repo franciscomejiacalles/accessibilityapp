@@ -25,5 +25,14 @@ public class MainMenu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button profileBtn = findViewById(R.id.profileBtn);
+        profileBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getApplicationContext(), UserProfile.class);
+                startActivity(intent);
+            }
+        });
     }
 }

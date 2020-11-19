@@ -25,7 +25,7 @@ public class GamesIntegrationTest {
     @Test
     public void gamesLaunch() {
         // Check that clicking the start game button takes the user to the game screen.
-        onView(withId(R.id.gamesTextView)).check(matches(isDisplayed()));
+        onView(withId(R.id.gamesTitle)).check(matches(isDisplayed()));
         onView(withId(R.id.facialExpressionButton)).check(matches(isDisplayed()));
 
         onView(withId(R.id.facialExpressionButton))

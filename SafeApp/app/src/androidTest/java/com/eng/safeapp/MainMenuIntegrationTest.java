@@ -29,6 +29,6 @@ public class MainMenuIntegrationTest {
 
         onView(withId(R.id.gamesBtn))
                 .perform(click());
-        onView(withId(R.id.gamesTextView)).check(matches(isDisplayed()));
+        onView(withId(R.id.gamesTitle)).check(matches(isDisplayed()));
     }
 }

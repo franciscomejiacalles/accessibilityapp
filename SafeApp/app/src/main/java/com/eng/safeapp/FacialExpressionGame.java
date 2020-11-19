@@ -40,6 +40,15 @@ public class FacialExpressionGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facial_expression_game);
 
+        ImageButton quitBtn = findViewById(R.id.quitFacialExpressionGameBtn);
+        quitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainMenu.class));
+                finish();
+            }
+        });
+
         initializeButtons();
         initializeFacialExpressionMapping();
         registerOnClickListeners();
