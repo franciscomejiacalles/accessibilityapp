@@ -34,5 +34,14 @@ public class MainMenu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button analyticsBtn = findViewById(R.id.analyticsBtn);
+        analyticsBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getApplicationContext(), Analytics.class);
+                startActivity(intent);
+            }
+        });
     }
 }

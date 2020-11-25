@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FacialExpressionGameOver">
+    tools:context=".GameOver">
 
     <TextView
         android:id="@+id/gameOverTextView"
         android:layout_width="272dp"
         android:layout_height="93dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="120dp"
         android:text="Game Over"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -23,7 +23,7 @@
         android:id="@+id/scoreTitleTextView"
         android:layout_width="135dp"
         android:layout_height="77dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="8dp"
         android:text="Score"
         android:textSize="50sp"
         android:textStyle="italic"
@@ -35,11 +35,12 @@
         android:id="@+id/scoreTextView"
         android:layout_width="116dp"
         android:layout_height="75dp"
-        android:layout_marginTop="36dp"
-        android:text="0"
+        android:layout_marginTop="12dp"
         android:gravity="center"
+        android:text="0"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreTitleTextView" />
 
@@ -53,5 +54,15 @@
         android:text="Main Menu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/highScoreImage"
+        android:layout_width="223dp"
+        android:layout_height="258dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
+        app:srcCompat="@drawable/new_high_score" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

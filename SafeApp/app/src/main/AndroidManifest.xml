@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPassword"></activity>
+        <activity android:name=".SoundGameOver"></activity>
+        <activity android:name=".VocalExpressionGame" />
+        <activity android:name=".SoundAnalytics" />
+        <activity android:name=".FacialExpressionAnalytics" />
+        <activity android:name=".Analytics" />
+        <activity android:name=".ForgotPassword" />
         <activity android:name=".UserProfile" />
         <activity android:name=".Register" />
         <activity android:name=".Login">
@@ -20,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Games" />
-        <activity android:name=".FacialExpressionGameOver" />
+        <activity android:name=".GameOver" />
         <activity android:name=".FacialExpressionGame" />
         <activity android:name=".MainMenu">
             <intent-filter>

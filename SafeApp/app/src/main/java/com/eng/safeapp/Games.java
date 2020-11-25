@@ -31,6 +31,15 @@ public class Games extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+
+        Button soundBtn = findViewById(R.id.soundButton);
+        soundBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getApplicationContext(), VocalExpressionGame.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

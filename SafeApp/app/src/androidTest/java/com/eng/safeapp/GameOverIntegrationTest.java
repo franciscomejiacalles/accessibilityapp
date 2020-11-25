@@ -16,10 +16,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class FacialExpressionGameOverIntegrationTest {
+public class GameOverIntegrationTest {
     @Rule
-    public ActivityTestRule<FacialExpressionGameOver> activityRule =
-            new ActivityTestRule<>(FacialExpressionGameOver.class);
+    public ActivityTestRule<GameOver> activityRule =
+            new ActivityTestRule<>(GameOver.class);
 
 
     @Test

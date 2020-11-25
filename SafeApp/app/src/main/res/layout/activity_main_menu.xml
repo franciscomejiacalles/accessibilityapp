@@ -20,17 +20,30 @@
         app:layout_constraintTop_toBottomOf="@+id/safeAppTextView" />
 
     <Button
-        android:id="@+id/profileBtn"
+        android:id="@+id/analyticsBtn"
         android:layout_width="315dp"
         android:layout_height="63dp"
-        android:layout_marginTop="28dp"
-        android:text="Profile"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
+        android:text="Analytics"
         android:textColor="#fff"
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gamesBtn" />
+
+    <Button
+        android:id="@+id/profileBtn"
+        android:layout_width="315dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#0ED6B9"
+        android:text="Profile"
+        android:textColor="#fff"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/analyticsBtn" />
 
     <TextView
         android:id="@+id/safeAppTextView"

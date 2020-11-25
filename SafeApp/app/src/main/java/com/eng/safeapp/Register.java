@@ -53,7 +53,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 startActivity(new Intent(this, Login.class));
                 break;
             case R.id.registerBtn:
-                System.out.println("Clicking Register Button!");
                 registerUser();
                 break;
         }

@@ -44,6 +44,7 @@ public class FacialExpressionGame extends AppCompatActivity {
         quitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                timer.cancel();
                 startActivity(new Intent(getApplicationContext(), MainMenu.class));
                 finish();
             }
@@ -61,13 +62,14 @@ public class FacialExpressionGame extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), FacialExpressionGameOver.class);
+                Intent intent = new Intent(getApplicationContext(), GameOver.class);
                 intent.putExtra("correct", correct);
                 intent.putExtra("incorrect", incorrect);
+                intent.putExtra("game", "facialExpression");
                 startActivity(intent);
                 finish();
             }
-        }, 60000);
+        }, 10000);
     }
 
     public void loadNextMatch() {
@@ -183,12 +185,12 @@ public class FacialExpressionGame extends AppCompatActivity {
 
     public void initializeButtons() {
         // could this be done differently?
-        buttons.add((ImageButton) findViewById(R.id.button0));
-        buttons.add((ImageButton) findViewById(R.id.button1));
-        buttons.add((ImageButton) findViewById(R.id.button2));
-        buttons.add((ImageButton) findViewById(R.id.button3));
-        buttons.add((ImageButton) findViewById(R.id.button4));
-        buttons.add((ImageButton) findViewById(R.id.button5));
+        buttons.add((ImageButton) findViewById(R.id.facial_button_1));
+        buttons.add((ImageButton) findViewById(R.id.facial_button_2));
+        buttons.add((ImageButton) findViewById(R.id.facial_button_3));
+        buttons.add((ImageButton) findViewById(R.id.facial_button_4));
+        buttons.add((ImageButton) findViewById(R.id.facial_button_5));
+        buttons.add((ImageButton) findViewById(R.id.facial_button_6));
     }
 
     // a clearer name would be preferred, for eg: chooseRandomEmotion
