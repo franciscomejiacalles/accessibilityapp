@@ -5,26 +5,68 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/* javadoc?
+/*
+    Author: Jacobus Burger <therealjacoburger@gmail.com>
+    Last Modified: 2020-11-25
  * what does this class do, what is it used for?
  */
 public class VocalExpressionGame extends AppCompatActivity {
-    /* For the moment this entire class is just a clone of FacialExpressionGame.
-    I intend to personalize it soon */
+    final int startTime = 60; // amount of time to give player in seconds
+    Random rand = new Random(); // random number generator
+
+    //  unfortunately I'm unaware of any nicer way to do this
+    // array of emotion voice acting snippets
+    MediaPlayer[] vocalEmotions = new MediaPlayer[] {
+            MediaPlayer.create(this, R.raw.anger1),
+            MediaPlayer.create(this, R.raw.anger2),
+            MediaPlayer.create(this, R.raw.anger3),
+            MediaPlayer.create(this, R.raw.anger4),
+            MediaPlayer.create(this, R.raw.confused1),
+            MediaPlayer.create(this, R.raw.confused2),
+            MediaPlayer.create(this, R.raw.confused3),
+            MediaPlayer.create(this, R.raw.confused4),
+            MediaPlayer.create(this, R.raw.disgust1),
+            MediaPlayer.create(this, R.raw.disgust2),
+            MediaPlayer.create(this, R.raw.disgust3),
+            MediaPlayer.create(this, R.raw.disgust4),
+            MediaPlayer.create(this, R.raw.fear1),
+            MediaPlayer.create(this, R.raw.fear2),
+            MediaPlayer.create(this, R.raw.fear3),
+            MediaPlayer.create(this, R.raw.happy1),
+            MediaPlayer.create(this, R.raw.happy2),
+            MediaPlayer.create(this, R.raw.happy3),
+            MediaPlayer.create(this, R.raw.happy4),
+            MediaPlayer.create(this, R.raw.neutral1),
+            MediaPlayer.create(this, R.raw.neutral2),
+            MediaPlayer.create(this, R.raw.neutral3),
+            MediaPlayer.create(this, R.raw.neutral4),
+            MediaPlayer.create(this, R.raw.sad1),
+            MediaPlayer.create(this, R.raw.sad2),
+            MediaPlayer.create(this, R.raw.sad3),
+            MediaPlayer.create(this, R.raw.sad4),
+            MediaPlayer.create(this, R.raw.surprised1),
+            MediaPlayer.create(this, R.raw.surprised2),
+            MediaPlayer.create(this, R.raw.surprised3),
+            MediaPlayer.create(this, R.raw.surprised4),
+    };
 
     /*
         @  while (game)
@@ -40,28 +82,43 @@ public class VocalExpressionGame extends AppCompatActivity {
         END
     */
 
-    /*
-    while (!timeUp) {
-        ...
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+        final Intent intent = new Intent(getApplicationContext(), VocalExpressionGame.class);
+        startActivity(intent);
+
+        // start a timer to stop the game
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final Intent endGame = new Intent(getApplicationContext(), FacialExpressionGameOver.class); // temporary substitute
+                startActivity(endGame);
+                // endGame.putExtra("variable", present_value); -- if i understand this throws values to new intents
+                finish();
+            }
+        }, startTime * 1000);
+
+        MediaPlayer emotion = getRandomEmotion();
+        // ImageButton playEmotion = this.findViewById(R.id.voiceButton);
+        /* TODO
+        - create and use click event listeners in program
+        - ...
+         */
+
     }
 
-    MediaPlayer vocalEmotion;
-    ImageButton playEmotion = this.findViewById(R.id.voiceButton);
+    // returns a random voice file from vocalEmotions
+    public MediaPlayer getRandomEmotion() {
+        return vocalEmotions[rand.nextInt(vocalEmotions.length)];
+    }
 
-    public void nextEmotion() { }
-    public void vocalEmote() { }
-     */
-
-
-
-
-
-
-
-
+    /*
     Timer timer;
-    private String currentEmotion; /* could this be represented as
-                                      a num with a corresponding enum? */
+    private String currentEmotion; // could this be represented as
+                                   // a num with a corresponding enum?
     private int correct;    // why are these integers?
     private int incorrect;  // ~
 
@@ -259,4 +316,5 @@ public class VocalExpressionGame extends AppCompatActivity {
     public void setCurrentEmotion(String currentEmotion) {
         this.currentEmotion = currentEmotion;
     }
+     */
 }
