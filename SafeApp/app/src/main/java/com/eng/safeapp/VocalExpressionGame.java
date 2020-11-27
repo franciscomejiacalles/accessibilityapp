@@ -1,22 +1,14 @@
 package com.eng.safeapp;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PersistableBundle;
-import android.provider.MediaStore;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -28,13 +20,21 @@ import java.util.TimerTask;
     Last Modified: 2020-11-25
  * what does this class do, what is it used for?
  */
-public class VocalExpressionGame extends AppCompatActivity {
+public class VocalExpressionGame extends AppCompatActivity implements View.OnClickListener {
+    // helper values
     final int startTime = 60; // amount of time to give player in seconds
     Random rand = new Random(); // random number generator
 
-    //  unfortunately I'm unaware of any nicer way to do this
+    // game state values
+    emotions answer;
+    MediaPlayer voice;
+
+    final Intent game = new Intent(getApplicationContext(), VocalExpressionGame.class);
+    final Intent gameEnd = new Intent(getApplicationContext(), VocalExpressionGameOver.class);
+
     // array of emotion voice acting snippets
-    MediaPlayer[] vocalEmotions = new MediaPlayer[] {
+    // getEmotion depends on emotions being grouped together, or it cannot retrieve the correct emotion
+    MediaPlayer[] voices = new MediaPlayer[] {
             MediaPlayer.create(this, R.raw.anger1),
             MediaPlayer.create(this, R.raw.anger2),
             MediaPlayer.create(this, R.raw.anger3),
@@ -47,9 +47,6 @@ public class VocalExpressionGame extends AppCompatActivity {
             MediaPlayer.create(this, R.raw.disgust2),
             MediaPlayer.create(this, R.raw.disgust3),
             MediaPlayer.create(this, R.raw.disgust4),
-            MediaPlayer.create(this, R.raw.fear1),
-            MediaPlayer.create(this, R.raw.fear2),
-            MediaPlayer.create(this, R.raw.fear3),
             MediaPlayer.create(this, R.raw.happy1),
             MediaPlayer.create(this, R.raw.happy2),
             MediaPlayer.create(this, R.raw.happy3),
@@ -66,7 +63,23 @@ public class VocalExpressionGame extends AppCompatActivity {
             MediaPlayer.create(this, R.raw.surprised2),
             MediaPlayer.create(this, R.raw.surprised3),
             MediaPlayer.create(this, R.raw.surprised4),
+            MediaPlayer.create(this, R.raw.fear1),
+            MediaPlayer.create(this, R.raw.fear2),
+            MediaPlayer.create(this, R.raw.fear3),
     };
+
+    enum emotions {
+        Anger,
+        Confused,
+        Disgust,
+        Happy,
+        Neutral,
+        Sad,
+        Surprised,
+        Fear,
+    }
+
+
 
     /*
         @  while (game)
@@ -87,32 +100,63 @@ public class VocalExpressionGame extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
-        final Intent intent = new Intent(getApplicationContext(), VocalExpressionGame.class);
-        startActivity(intent);
+        startActivity(game);
 
         // start a timer to stop the game
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                final Intent endGame = new Intent(getApplicationContext(), FacialExpressionGameOver.class); // temporary substitute
-                startActivity(endGame);
-                // endGame.putExtra("variable", present_value); -- if i understand this throws values to new intents
+                startActivity(gameEnd);
+                // gameEnd.putExtra("variable", present_value); -- if i understand this throws values to new intents
                 finish();
             }
         }, startTime * 1000);
 
-        MediaPlayer emotion = getRandomEmotion();
-        // ImageButton playEmotion = this.findViewById(R.id.voiceButton);
-        /* TODO
-        - create and use click event listeners in program
-        - ...
-         */
 
     }
 
-    // returns a random voice file from vocalEmotions
-    public MediaPlayer getRandomEmotion() {
-        return vocalEmotions[rand.nextInt(vocalEmotions.length)];
+    // sets global current answer emotion
+    public void setAnswer() {
+        answer = emotions.values()[rand.nextInt()];
+    }
+
+    // selects random emotion that corresponds to current emotion
+    public MediaPlayer getVoice(emotions emotion) {
+        if (emotion == emotions.Fear) // fear is a special case because it has 3 instead of 4 files
+            return voices[rand.nextInt(3) + 4 * emotions.Fear.ordinal()];
+        return voices[rand.nextInt(4) + 4 * emotion.ordinal()];
+    }
+
+    // checks given user answer against current answer
+    public void checkAnswer(emotions emotion) { }
+
+    // each new round choose a new random number corresponding to an emotion
+    // select from those emotions, choosing a random voice
+    // assign random emotions to each answer button, keeping in mind the answer emotion
+    // score based on if answer matches answer emotion
+
+
+    // voice button is assigned current voice file
+    // - when clicked, reset and play the sound file
+    // answer buttons are assigned a random number
+    // - when clicked, that number is checked against the current emotion
+    //      if its correct: the button goes green and a positive score is given
+    //      if its not: the button goes red and a negative score is given
+    // .. after click, pick a new emotion, pick a new voice file, assign new
+    //    random pictures to answer buttons, and start again until time runs out
+
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.vocalButton:
+                voice.reset();
+                voice.start();
+                break;
+            // for other cases, get emotion enum assigned to answer button and checkAnswer()
+        }
     }
 
     /*
