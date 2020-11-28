@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
@@ -21,38 +19,51 @@ import java.util.TimerTask;
 /*
     Author: Jacobus Burger <therealjacoburger@gmail.com>
     Last Modified: 2020-11-27
-
     Descripion: This class represents the vocal expression game. Which plays voice clips that the
     player must guess the emotionality of.
 
     Details:
-    (talk about the data structures used, how it uses them, etc)
+    VocalExpressionGame uses an `emotions` enum to track which voice files to use, which images
+    to use, and what the correct answer for the round is.
 
-    // each new round choose a new random number corresponding to an emotion
-    // select from those emotions, choosing a random voice
-    // assign random emotions to each answer button, keeping in mind the answer emotion
-    // score based on if answer matches answer emotion
-    // voice button is assigned current voice file
-    // - when clicked, reset and play the sound file
-    // answer buttons are assigned a random number
-    // - when clicked, that number is checked against the current emotion
-    //      if its correct: the button goes green and a positive score is given
-    //      if its not: the button goes red and a negative score is given
-    // .. after click, pick a new emotion, pick a new voice file, assign new
-    //    random pictures to answer buttons, and start again until time runs out
+    The OnCreate method is used to setup the initial gamestate. Once called it begins a concurrent
+    timer that will switch the player over to the VocalExpressionGameOver class after it has run
+    for startTime seconds.
+
+    The OnClick method is used to determine what button was pressed and act accordingly.
+        If that button is the voiceButton, then it will replay the voice file.
+        If that button is the quitButton, then it will quit to main menu.
+        If that button is a choice button, then it will check if it is correct.
+            If it is, it will give a positive score, turn the button green, and move to next round.
+            If it is not, it will give a negative score, turn the button red, and move to next round.
+
+    The setButtons method chooses as many random emotions as there are buttons (with no repeats),
+    recording that association in the buttonEmotion mapping. Then each button is given an image
+    that corresponds with their given emotion, and finally the answer emotion is chosen from among
+    them at random.
+
+    The setVoice method chooses a random voice file that corresponds to the current global answer
+    emotion using the following formula (with the assumption that all of the files in voices
+    are ordered in the same order as in the emotions enum, and that all similar emotions are
+    clumped together into inorder groups):
+            current voice = voices at index random [0, 4) + 4 * emotional offset
+        The formula has a special exception for fear, since it only has 3 files. Due to its special
+        circumstance it must come last in the voices array and be selected with a specialized formula
+        or the program is likely to not work as intended.
  */
 public class VocalExpressionGame extends AppCompatActivity implements View.OnClickListener {
     // helper values
     final int startTime = 60; // amount of time to give player in seconds
     Random rand = new Random(); // random number generator
+
     // game state values
     emotions answer;
     MediaPlayer voice; // voice depends on answer
-    final Intent game = new Intent(getApplicationContext(), VocalExpressionGame.class);
-    final Intent gameEnd = new Intent(getApplicationContext(), VocalExpressionGameOver.class);
     final int correctPoints = 100;
     final int incorrectPoints = -100;
     int score = 0;
+    final Intent game = new Intent(getApplicationContext(), VocalExpressionGame.class);
+    final Intent gameEnd = new Intent(getApplicationContext(), VocalExpressionGameOver.class);
 
     enum emotions {
         Anger,
@@ -125,35 +136,25 @@ public class VocalExpressionGame extends AppCompatActivity implements View.OnCli
     Map<ImageButton, emotions> buttonEmotion = new HashMap<ImageButton, emotions>();
 
 
-    // assigns random emotion to button (ensuring no repeats) and assigns a corresponding image
-    public void setButtons() {
-        // assign random emotions to each answer button, ensuring no repeats
-        List<emotions> chosenEmotions = null;
-        buttonEmotion.clear();
-        for (ImageButton button : buttons) {
-            emotions emotion = emotions.values()[rand.nextInt(emotions.values().length)];
-            while (!chosenEmotions.contains(emotion)) {
-                buttonEmotion.put(button, emotion);
-                chosenEmotions.add(emotion);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_vocal_expression_game);
+        startActivity(game);
+
+        // game start functions
+        setButtons();
+        setVoice();
+
+        // end the game once the time runs out
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gameEnd.putExtra("score", score);
+                startActivity(gameEnd);
+                finish();
             }
-
-            // assign image to match button emotion
-            button.setImageResource(images[emotion.ordinal()]);
-        }
-
-        // pick the answer emotion randomly from one of those chosen
-        answer = chosenEmotions.get(rand.nextInt(emotions.values().length));
-    }
-
-    // note: depends on emotions being grouped together in voices[]
-    // selects random voice file that corresponds to current answer emotion, and assign it to global voice
-    public void setVoice() {
-        emotions emotion = answer;
-        if (emotion == emotions.Fear) { // fear is a special case because it has 3 instead of 4 files
-            voice = voices[rand.nextInt(3) + 4 * emotions.Fear.ordinal()];
-        } else {
-            voice = voices[rand.nextInt(4) + 4 * emotion.ordinal()];
-        }
+        }, startTime * 1000);
     }
 
     @Override
@@ -196,24 +197,34 @@ public class VocalExpressionGame extends AppCompatActivity implements View.OnCli
         }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vocal_expression_game);
-        startActivity(game);
-
-        // game start functions
-        setButtons();
-        setVoice();
-
-        // end the game once the time runs out
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameEnd.putExtra("score", score);
-                startActivity(gameEnd);
-                finish();
+    // assigns random emotion to button (ensuring no repeats) and assigns a corresponding image
+    public void setButtons() {
+        // assign random emotions to each answer button, ensuring no repeats
+        List<emotions> chosenEmotions = null; // might be a hazard
+        buttonEmotion.clear();
+        for (ImageButton button : buttons) {
+            emotions emotion = emotions.values()[rand.nextInt(emotions.values().length)];
+            while (!chosenEmotions.contains(emotion)) {
+                buttonEmotion.put(button, emotion);
+                chosenEmotions.add(emotion);
             }
-        }, startTime * 1000);
+
+            // assign image to match button emotion
+            button.setImageResource(images[emotion.ordinal()]);
+        }
+
+        // pick the answer emotion randomly from one of those chosen
+        answer = chosenEmotions.get(rand.nextInt(emotions.values().length));
+    }
+
+    // note: depends on emotions being grouped together in voices[]
+    // selects random voice file that corresponds to current answer emotion, and assign it to global voice
+    public void setVoice() {
+        emotions emotion = answer;
+        if (emotion == emotions.Fear) { // fear is a special case because it has 3 instead of 4 files
+            voice = voices[rand.nextInt(3) + 4 * emotions.Fear.ordinal()];
+        } else {
+            voice = voices[rand.nextInt(4) + 4 * emotion.ordinal()];
+        }
     }
 }

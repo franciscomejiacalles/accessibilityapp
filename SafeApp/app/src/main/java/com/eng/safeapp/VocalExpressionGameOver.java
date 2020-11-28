@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// this class simply takes the user to the game over screen and shows them their score
 public class VocalExpressionGameOver extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
